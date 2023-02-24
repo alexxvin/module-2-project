@@ -1,0 +1,18 @@
+<h1>This is bikes inventory page</h1>
+
+{{#each bikes}}
+<div>
+<h3>{{make}}</h3>
+<h3>{{model}}</h3>
+<h3>{{title}}</h3>
+<a href="/bikes/{{_id}}">See details</a>
+<a href="/bikes/{{_id}}/edit">Edit</a>
+</div>
+
+
+<div>
+<form action="/bikes/{{_id}}/delete" method="POST">
+<button id="delete">DELETE</button>
+</form>
+</div>
+{{/each}}
