@@ -3,6 +3,7 @@
 const { Schema, model } = require("mongoose");
 const bikeSchema = new Schema(
   {
+    author: { type: Schema.Types.ObjectId, ref: "User" },
     make: {
       type: String,
       required: [true, "make is required"],
@@ -43,6 +44,7 @@ const bikeSchema = new Schema(
       type: String,
       required: [true],
     },
+    // comments: [{ type: Schema.Types.ObjectId, ref: "Comment" }],
   },
   {
     timestamps: true,

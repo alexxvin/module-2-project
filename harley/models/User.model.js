@@ -22,6 +22,7 @@ const userSchema = new Schema(
       type: String,
       required: [true, "Password is required"],
     },
+    bikes: [{ type: Schema.Types.ObjectId, ref: "Bike" }],
   },
   {
     timestamps: true,

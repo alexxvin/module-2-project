@@ -2,10 +2,22 @@
 const router = require("express").Router();
 
 const Bike = require("../models/Bike.model.js");
+const User = require("../models/User.model.js");
 
-router.get("/bikes/create", (req, res) => res.render("bikes/bike-create.hbs"));
+router.get("/bikes/create", (req, res) => {
+  if (!req.session.currentUser) {
+    res.redirect("/login");
+    return;
+  }
+
+  res.render("bikes/bike-create.hbs");
+});
 
 router.post("/bikes/create", (req, res, next) => {
+  if (!req.session.currentUser) {
+    res.redirect("/login");
+    return;
+  }
   const {
     make,
     model,
@@ -29,10 +41,18 @@ router.post("/bikes/create", (req, res, next) => {
     description,
     bikeCondition,
     price,
+    author: req.session.currentUser._id,
   })
+    .then((bikeFromDB) => {
+      return User.findByIdAndUpdate(req.session.currentUser._id, {
+        $push: { bikes: bikeFromDB._id },
+      });
+    })
     .then(() => res.redirect("/bikes"))
-    .catch((error) => next(error));
-
+    .catch((error) => {
+      console.log(`Error while creating the post in the DB: ${error}`);
+      next(error);
+    });
   //console.log(req.body);
 });
 
@@ -43,7 +63,7 @@ router.get("/bikes", (req, res, next) => {
       res.render("bikes/bikes.hbs", { bikes: allBikesFromDB });
     })
     .catch((error) => {
-      console.log("Error while getting the books from DB: ", error);
+      console.log("Error while getting the bikes from DB: ", error);
       next(error);
     });
 });

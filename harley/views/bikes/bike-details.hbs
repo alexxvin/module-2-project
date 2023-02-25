@@ -18,6 +18,24 @@
 <hr>
 <h3>{{bike.price}}</h3>
 <hr>
+<h3>Seller: {{author.username}}</h3>
 <a href="/bikes">Back</a>
+<a href="bikes/:bikeId/comment">Comment</a>
 
 </div>
+
+{{#unless comments}}
+<p>No comments yet!</p>
+{{/unless}}
+
+{{#each comments}}
+<p><b>{{this.author.username}}:</b>{{this.content}}</p>
+{{/each}}
+
+<hr>
+
+<h3>Add comment</h3>
+
+<form action="/post/{{_id}}/comment" method="post">
+
+</form>
